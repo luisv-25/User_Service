@@ -4,21 +4,14 @@ import { ValidationPipe } from "@nestjs/common";
 import { AppModule } from "./app.module";
 
 async function bootstrap() {
-  try {
-    const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule);
+  app.enableCors();
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  app.setGlobalPrefix("api/v1");
 
-    await app.listen(process.env.PORT || 3000);
-
-    console.log(`Application running on port ${process.env.PORT || 3000}`);
-  } catch (error) {
-    console.error("BOOTSTRAP ERROR:", error);
-    console.error("BOOTSTRAP ERROR JSON:", JSON.stringify(error, null, 2));
-    process.exit(1);
-  }
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+  // eslint-disable-next-line no-console
+  console.log(`[user-service] listening on port ${port}`);
 }
-
-bootstrap().catch((error) => {
-  console.error("UNHANDLED BOOTSTRAP ERROR:", error);
-  console.error("UNHANDLED BOOTSTRAP ERROR JSON:", JSON.stringify(error, null, 2));
-  process.exit(1);
-});
+bootstrap();
