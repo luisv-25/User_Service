@@ -20,7 +20,7 @@ import { RefreshToken } from "./users/entities/refresh-token.entity";
       database: process.env.DB_NAME || "user_db",
       ssl: process.env.DB_SSL === "true" ? { rejectUnauthorized: false } : false,
       entities: [User, AvailabilitySlot, RefreshToken],
-      synchronize: process.env.DB_SYNCHRONIZE !== "false", // OK para el entorno local de esta entrega; en un pipeline real irían migraciones versionadas
+      synchronize: process.env.DB_SYNCHRONIZE = "false", // OK para el entorno local de esta entrega; en un pipeline real irían migraciones versionadas
     }),
     EventsModule,
     UsersModule,
